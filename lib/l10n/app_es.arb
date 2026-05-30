@@ -1,0 +1,12 @@
+{
+  "close": "Cerrar",
+  "maximize": "Maximizar",
+  "minimize": "Minimizar",
+  "home": "Inicio",
+  "library": "Biblioteca",
+  "playlists": "Listas de Reproducción",
+  "albums": "Álbumes",
+  "artists": "Artistas",
+  "favorites": "Favoritos",
+  "settings": "Ajustes"
+}

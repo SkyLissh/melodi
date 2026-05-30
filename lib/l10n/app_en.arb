@@ -1,0 +1,12 @@
+{
+  "close": "Close",
+  "maximize": "Maximize",
+  "minimize": "Minimize",
+  "home": "Home",
+  "library": "Library",
+  "playlists": "Playlists",
+  "albums": "Albums",
+  "artists": "Artists",
+  "favorites": "Favorites",
+  "settings": "Settings"
+}
