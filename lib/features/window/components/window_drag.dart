@@ -4,11 +4,13 @@ class WindowDragHandle extends StatelessWidget {
   final VoidCallback onDrag;
   final VoidCallback onMaximize;
   final VoidCallback onSecondaryTap;
+  final Widget? child;
 
   const WindowDragHandle({
     required this.onDrag,
     required this.onMaximize,
     required this.onSecondaryTap,
+    this.child,
     super.key,
   });
 
@@ -20,6 +22,7 @@ class WindowDragHandle extends StatelessWidget {
         onPanStart: (_) => onDrag(),
         onDoubleTap: () => onMaximize(),
         onSecondaryTap: () => onSecondaryTap(),
+        child: child,
       ),
     );
   }
