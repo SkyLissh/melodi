@@ -2,19 +2,12 @@ import "package:auto_route/auto_route.dart";
 import "package:flutter/widgets.dart";
 import "package:forui/forui.dart";
 import "package:hooks_riverpod/hooks_riverpod.dart";
-import "package:hugeicons/hugeicons.dart";
 import "package:melodi/features/browse/browse.dart";
 import "package:melodi/features/library/library.dart";
+import "package:melodi/features/search/search.dart";
 import "package:melodi/features/window/window.dart";
 import "package:melodi/shared/shared.dart";
 import "package:melodi/theme/theme.dart";
-
-class Completion {
-  final String name;
-  final String description;
-
-  const Completion(this.name, this.description);
-}
 
 @RoutePage()
 class HomeScreen extends HookConsumerWidget {
@@ -23,17 +16,9 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final style = context.theme.style;
-    final colors = context.theme.colors;
     final carousels = ref.watch(carouselsProvider);
 
     final window = useWindow();
-
-    final completions = [
-      const Completion("example 1", "example"),
-      const Completion("example 2", "example 2"),
-      const Completion("example 3", "example 3"),
-      const Completion("example 4", "example 4"),
-    ];
 
     return FScaffold(
       sidebar: Padding(padding: style.padding.md.copyWith(right: 0), child: const Sidebar()),
@@ -51,24 +36,7 @@ class HomeScreen extends HookConsumerWidget {
                   ),
                 ),
 
-                SizedBox(
-                  width: 500,
-                  child: Padding(
-                    padding: .symmetric(horizontal: style.spacing.lg),
-                    child: FAutocomplete(
-                      hint: "What you want to listen?",
-                      prefixBuilder: (_, _, _) => Padding(
-                        padding: EdgeInsets.only(left: style.spacing.md),
-                        child: HugeIcon(
-                          icon: HugeIcons.strokeRoundedSearch01,
-                          color: colors.mutedForeground,
-                        ),
-                      ),
-                      clearable: (value) => value.text.isNotEmpty,
-                      items: {for (final completion in completions) completion.name: completion},
-                    ),
-                  ),
-                ),
+                SearchBar(),
 
                 Expanded(
                   child: WindowDragHandle(

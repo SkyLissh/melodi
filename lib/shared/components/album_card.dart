@@ -17,38 +17,104 @@ class AlbumCard extends HookWidget {
     final style = context.theme.style;
     final colors = context.theme.colors;
 
-    final hovered = useState(false);
+    final animationController = useAnimationController(duration: const Duration(milliseconds: 200));
 
-    return FTappable.static(
-      onHoverChange: (value) => hovered.value = value,
-      onPress: () => print("Clicked Album"),
-      child: Column(
-        crossAxisAlignment: .start,
-        spacing: style.spacing.sm,
-        children: [
-          Container(
-            clipBehavior: .hardEdge,
-            height: 180,
-            width: 180,
-            decoration: BoxDecoration(color: colors.muted, borderRadius: style.borderRadius.xl),
-            child: AnimatedScale(
-              scale: hovered.value ? 1.2 : 1.0,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              child: imageUrl != null
-                  ? Image.network(imageUrl!)
-                  : const Center(child: HugeIcon(icon: HugeIcons.strokeRoundedVynil01, size: 64)),
-            ),
-          ),
-          Column(
+    final opacity = useMemoized(
+      () => Tween<double>(
+        begin: 0,
+        end: 1,
+      ).animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOutCubic)),
+      [animationController],
+    );
+    final slide = useMemoized(
+      () => Tween<Offset>(
+        begin: const Offset(0, 0.2),
+        end: Offset.zero,
+      ).animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOutCubic)),
+      [animationController],
+    );
+    final scale = useMemoized(
+      () => Tween<double>(
+        begin: 1.0,
+        end: 1.2,
+      ).animate(CurvedAnimation(parent: animationController, curve: Curves.easeInOutCubic)),
+      [animationController],
+    );
+
+    return Stack(
+      children: [
+        FTappable.static(
+          onHoverChange: (value) {
+            if (value) {
+              animationController.forward();
+            } else {
+              animationController.reverse();
+            }
+          },
+          onPress: () => print("Clicked Album"),
+          child: Column(
             crossAxisAlignment: .start,
+            spacing: style.spacing.sm,
             children: [
-              Text(name, style: typography.md),
-              Text(artistName, style: typography.sm.copyWith(color: colors.mutedForeground)),
+              Stack(
+                children: [
+                  Container(
+                    clipBehavior: .hardEdge,
+                    height: 180,
+                    width: 180,
+                    decoration: BoxDecoration(
+                      color: colors.muted,
+                      borderRadius: style.borderRadius.xl,
+                    ),
+                    child: ScaleTransition(
+                      scale: scale,
+                      child: imageUrl != null
+                          ? Image.network(imageUrl!)
+                          : const Center(
+                              child: HugeIcon(icon: HugeIcons.strokeRoundedVynil01, size: 64),
+                            ),
+                    ),
+                  ),
+                  Positioned.fill(
+                    bottom: style.spacing.md,
+                    right: style.spacing.md,
+                    child: FadeTransition(
+                      opacity: opacity,
+                      child: SlideTransition(
+                        position: slide,
+                        child: Align(
+                          alignment: .bottomRight,
+                          child: FButton.icon(
+                            onPress: () {},
+                            variant: .primary,
+                            style: .delta(
+                              decoration: .delta([
+                                .base(.boxDelta(borderRadius: style.borderRadius.pill)),
+                                .match({
+                                  .hovered,
+                                  .pressed,
+                                }, .boxDelta(borderRadius: style.borderRadius.pill)),
+                              ]),
+                            ),
+                            child: const HugeIcon(icon: HugeIcons.strokeRoundedPlay),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: .start,
+                children: [
+                  Text(name, style: typography.md),
+                  Text(artistName, style: typography.sm.copyWith(color: colors.mutedForeground)),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

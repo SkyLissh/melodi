@@ -112,7 +112,7 @@ class Shelf extends HookWidget {
                       padding: .symmetric(horizontal: inset),
                       physics: const BouncingScrollPhysics(),
                       controller: controller,
-                      scrollDirection: Axis.horizontal,
+                      scrollDirection: .horizontal,
                       itemCount: items.length,
                       itemBuilder: (_, index) => items[index],
                       separatorBuilder: (_, index) => SizedBox(width: style.spacing.lg),
