@@ -49,7 +49,3 @@ Requires Flutter (Dart SDK `^3.11.4`). The UI is fully data-driven — point it 
 - Desktop + mobile desktop-grade windowing
 - A real design system and theming
 - Internationalization done properly
-
----
-
-*Built by [Alisson "SkyLissh" Hernandez] — Flutter, Dart, and cross-platform UI. This is a personal portfolio project.*
